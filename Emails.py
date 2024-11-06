@@ -39,4 +39,5 @@ model.fit(X_train, y_train)
 # predict 
 y_pred = model.predict(X_test) 
 metrics.confusion_matrix(y_true=y_test, y_pred=y_pred)
- print("SVM accuracy = ",metrics.accuracy_score(y_test,y_pred)) 
+print("SVM accuracy = ",metrics.accuracy_score(y_test,y_pred)) 
+print(metrics.classification_report(y_test,y_pred))
