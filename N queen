@@ -1,0 +1,57 @@
+print("Enter the number of queens (N):")
+N = int(input())  # Input for number of queens
+
+# Initialize the NxN chessboard with 0
+board = [[0] * N for _ in range(N)]
+
+print("Enter the row index (0-based) for the first queen's position:")
+first_row = int(input())  # Input for the row index of the first queen
+
+print("Enter the column index (0-based) for the first queen's position:")
+first_col = int(input())  # Input for the column index of the first queen
+
+# Place the first queen on the board at the given position
+board[first_row][first_col] = 1
+
+# Function to check if placing a queen at (i, j) is safe
+def is_attack(i, j):
+    # Check the row and column for existing queens
+    for k in range(N):
+        if board[i][k] == 1 or board[k][j] == 1:
+            return True
+
+    # Check the two diagonals for existing queens
+    for k in range(N):
+        for l in range(N):
+            if (k + l == i + j) or (k - l == i - j):  # Diagonal conditions
+                if board[k][l] == 1:
+                    return True
+    return False
+
+# Function to place N queens on the board using backtracking
+# `remaining_queens` excludes the first queen placed initially
+def N_queen(remaining_queens):
+    # If all remaining queens are placed, return True
+    if remaining_queens == 0:
+        return True
+
+    for i in range(N):
+        for j in range(N):
+            # Check if we can place a queen at board[i][j]
+            if (not is_attack(i, j)) and (board[i][j] != 1):
+                board[i][j] = 1  # Place the queen
+
+                # Recurse to place the next queen
+                if N_queen(remaining_queens - 1):  # Recursive call for remaining_queens-1 queens
+                    return True
+                
+                board[i][j] = 0  # Backtrack: remove the queen
+
+    return False  # If no position is possible, return False
+
+# Try to solve the N-Queens problem starting with the initial queen
+if N_queen(N - 1):  # Subtracting 1 as we already placed the first queen
+    for row in board:  # Print the solution board
+        print(row)
+else:
+    print("No solution exists for this board size and initial position.")
